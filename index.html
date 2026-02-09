@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Категории измерений</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        background: #f3f4f6;
+      }
+
+      .edit-toggle {
+        position: fixed;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 700;
+        background: #2563eb;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: #111827;
+        color: #f9fafb;
+        border-right: 3px solid #0b0f1a;
+        padding: 80px 24px 24px;
+      }
+
+      .sidebar a {
+        display: block;
+        color: #e5e7eb;
+        text-decoration: none;
+        margin-bottom: 14px;
+        font-size: 20px;
+      }
+
+      .sidebar a:hover {
+        color: #93c5fd;
+      }
+
+      .preview {
+        background: #ffffff;
+        padding: 80px 36px 36px;
+      }
+
+      .preview h1 {
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+
+      .fact {
+        display: block;
+        margin-bottom: 14px;
+        line-height: 1.45;
+      }
+
+      .telegram-link {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        background: #22c55e;
+        color: #06220f;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+      }
+
+      .edit-mode [contenteditable="true"] {
+        outline: 2px dashed #2563eb;
+        outline-offset: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="edit-toggle" id="editBtn">Включить режим редактирования</button>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <a href="#distance" contenteditable="false">1. Категория расстояний</a>
+        <a href="#size" contenteditable="false">2. Категория размеров</a>
+        <a href="#speed" contenteditable="false">3. Категория скорости</a>
+        <a href="#mass" contenteditable="false">4. Категория масс</a>
+      </aside>
+
+      <section class="preview" id="speed" contenteditable="false">
+        <h1>Предпросмотр: Категория скорости</h1>
+        <span class="fact">• Свет в вакууме движется со скоростью около 300 000 км/с — это предел передачи информации по современным физическим моделям, поэтому он служит эталоном в физике.</span>
+        <span class="fact">• Самый быстрый наземный зверь — гепард, до ~100–110 км/ч на коротком рывке, потому что его тело оптимизировано для мгновенного ускорения, а не длительного бега.</span>
+        <span class="fact">• Пассажирские самолёты обычно летят примерно 850–950 км/ч: так балансируются время в пути, расход топлива и безопасность полёта.</span>
+        <span class="fact">• На низкой орбите Земли спутники движутся около 7,8 км/с, иначе они не удержались бы на орбите и либо упали бы, либо ушли выше.</span>
+      </section>
+    </main>
+
+    <a class="telegram-link" href="https://t.me/" target="_blank" rel="noopener noreferrer">предложка</a>
+
+    <script>
+      const editBtn = document.getElementById('editBtn');
+      const editableElements = document.querySelectorAll('[contenteditable]');
+      let isEditing = false;
+
+      editBtn.addEventListener('click', () => {
+        isEditing = !isEditing;
+        editableElements.forEach((el) => {
+          el.setAttribute('contenteditable', String(isEditing));
+        });
+
+        document.body.classList.toggle('edit-mode', isEditing);
+        editBtn.textContent = isEditing
+          ? 'Выключить режим редактирования'
+          : 'Включить режим редактирования';
+      });
+    </script>
+  </body>
+</html>
