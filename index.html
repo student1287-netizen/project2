@@ -1,135 +1,293 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Категории измерений</title>
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+<head>
+<meta charset="UTF-8">
+<title>Категории величин</title>
 
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        min-height: 100vh;
-        background: #f3f4f6;
-      }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 
-      .edit-toggle {
-        position: fixed;
-        top: 16px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 16px;
-        font-size: 14px;
-        font-weight: 700;
-        background: #2563eb;
-        color: #fff;
-        cursor: pointer;
-      }
+/* Верхняя панель */
+.top-bar {
+    background: #222;
+    color: white;
+    padding: 10px;
+    text-align: right;
+}
 
-      .layout {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        min-height: 100vh;
-      }
+/* Основной контейнер */
+.container {
+    display: flex;
+    height: calc(100vh - 50px);
+}
 
-      .sidebar {
-        background: #111827;
-        color: #f9fafb;
-        border-right: 3px solid #0b0f1a;
-        padding: 80px 24px 24px;
-      }
+/* Левая панель */
+.left {
+    width: 33.33%;
+    background: #111;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    border-right: 2px solid #444;
+    overflow-y: auto;
+}
 
-      .sidebar a {
-        display: block;
-        color: #e5e7eb;
-        text-decoration: none;
-        margin-bottom: 14px;
-        font-size: 20px;
-      }
+.category {
+    margin-bottom: 15px;
+}
 
-      .sidebar a:hover {
-        color: #93c5fd;
-      }
+.category-title {
+    font-weight: bold;
+    cursor: pointer;
+}
 
-      .preview {
-        background: #ffffff;
-        padding: 80px 36px 36px;
-      }
+.category-title:hover {
+    text-decoration: underline;
+}
 
-      .preview h1 {
-        margin-top: 0;
-        margin-bottom: 20px;
-      }
+.subpage {
+    margin-left: 15px;
+    cursor: pointer;
+    margin-top: 5px;
+}
 
-      .fact {
-        display: block;
-        margin-bottom: 14px;
-        line-height: 1.45;
-      }
+.subpage:hover {
+    text-decoration: underline;
+}
 
-      .telegram-link {
-        position: fixed;
-        right: 18px;
-        bottom: 18px;
-        padding: 12px 18px;
-        border-radius: 999px;
-        text-decoration: none;
-        font-weight: 700;
-        background: #22c55e;
-        color: #06220f;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-      }
+.delete-btn {
+    display: none;
+    background: red;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-left: 5px;
+}
 
-      .edit-mode [contenteditable="true"] {
-        outline: 2px dashed #2563eb;
-        outline-offset: 4px;
-      }
-    </style>
-  </head>
-  <body>
-    <button class="edit-toggle" id="editBtn">Включить режим редактирования</button>
+.add-btn {
+    display: none;
+    margin-top: 10px;
+    background: #444;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
 
-    <main class="layout">
-      <aside class="sidebar">
-        <a href="#distance" contenteditable="false">1. Категория расстояний</a>
-        <a href="#size" contenteditable="false">2. Категория размеров</a>
-        <a href="#speed" contenteditable="false">3. Категория скорости</a>
-        <a href="#mass" contenteditable="false">4. Категория масс</a>
-      </aside>
+/* Правая часть */
+.right {
+    width: 66.66%;
+    padding: 20px;
+    overflow-y: auto;
+}
 
-      <section class="preview" id="speed" contenteditable="false">
-        <h1>Предпросмотр: Категория скорости</h1>
-        <span class="fact">• Свет в вакууме движется со скоростью около 300 000 км/с — это предел передачи информации по современным физическим моделям, поэтому он служит эталоном в физике.</span>
-        <span class="fact">• Самый быстрый наземный зверь — гепард, до ~100–110 км/ч на коротком рывке, потому что его тело оптимизировано для мгновенного ускорения, а не длительного бега.</span>
-        <span class="fact">• Пассажирские самолёты обычно летят примерно 850–950 км/ч: так балансируются время в пути, расход топлива и безопасность полёта.</span>
-        <span class="fact">• На низкой орбите Земли спутники движутся около 7,8 км/с, иначе они не удержались бы на орбите и либо упали бы, либо ушли выше.</span>
-      </section>
-    </main>
+/* Телеграм */
+.telegram-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #0088cc;
+    color: white;
+    padding: 12px 18px;
+    text-decoration: none;
+    border-radius: 6px;
+}
 
-    <a class="telegram-link" href="https://t.me/" target="_blank" rel="noopener noreferrer">предложка</a>
+.editable[contenteditable="true"] {
+    border: 1px dashed red;
+    padding: 3px;
+}
+</style>
+</head>
 
-    <script>
-      const editBtn = document.getElementById('editBtn');
-      const editableElements = document.querySelectorAll('[contenteditable]');
-      let isEditing = false;
+<body>
 
-      editBtn.addEventListener('click', () => {
-        isEditing = !isEditing;
-        editableElements.forEach((el) => {
-          el.setAttribute('contenteditable', String(isEditing));
-        });
+<div class="top-bar">
+    <button onclick="toggleEditMode()">Режим редактирования</button>
+    <button id="addPhotoBtn" onclick="addPhoto()" style="display:none;">
+        Добавить фото
+    </button>
+</div>
 
-        document.body.classList.toggle('edit-mode', isEditing);
-        editBtn.textContent = isEditing
-          ? 'Выключить режим редактирования'
-          : 'Включить режим редактирования';
-      });
-    </script>
-  </body>
+<div class="container">
+
+    <div class="left" id="menu">
+
+        <button class="add-btn" id="addCategoryBtn" onclick="addCategory()">+ Добавить категорию</button>
+
+    </div>
+
+    <div class="right" id="content">
+        <div id="home" class="page editable">
+            <h2>Главная страница</h2>
+            <p>Выберите категорию слева.</p>
+        </div>
+    </div>
+
+</div>
+
+<a class="telegram-btn" href="https://t.me/your_bot_username" target="_blank">
+    предложка
+</a>
+<script>
+let editMode = false;
+const password = "1234";
+let idCounter = 0;
+let currentPageId = "home";
+
+function toggleEditMode() {
+    if (!editMode) {
+        let input = prompt("Введите пароль:");
+        if (input === password) {
+            editMode = true;
+            document.querySelectorAll(".editable").forEach(el => el.contentEditable = "true");
+            document.querySelectorAll(".delete-btn").forEach(btn => btn.style.display = "inline");
+            document.querySelectorAll(".add-btn").forEach(btn => btn.style.display = "block");
+            document.getElementById("addPhotoBtn").style.display = "inline-block";
+        } else {
+            alert("Неверный пароль");
+        }
+    } else {
+        editMode = false;
+            document.querySelectorAll(".editable").forEach(el => el.contentEditable = "false");
+            document.querySelectorAll(".delete-btn").forEach(btn => btn.style.display = "none");
+            document.querySelectorAll(".add-btn").forEach(btn => btn.style.display = "none");
+            document.getElementById("addPhotoBtn").style.display = "none";
+    }
+}
+
+function showPage(id) {
+    currentPageId = id;
+    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    document.getElementById(id).style.display = "block";
+}
+
+function addCategory() {
+    let title = prompt("Название категории:");
+    if (!title) return;
+
+    idCounter++;
+    let catId = "cat" + idCounter;
+
+    let category = document.createElement("div");
+    category.className = "category";
+    category.setAttribute("data-id", catId);
+
+    let titleSpan = document.createElement("span");
+    titleSpan.textContent = title;
+    titleSpan.className = "category-title editable";
+    titleSpan.contentEditable = editMode;
+    titleSpan.onclick = function() { showPage(catId); };
+
+    let delBtn = document.createElement("button");
+    delBtn.textContent = "X";
+    delBtn.className = "delete-btn";
+    delBtn.onclick = function() {
+        document.getElementById(catId).remove();
+        category.remove();
+    };
+
+    let addSubBtn = document.createElement("button");
+    addSubBtn.textContent = "+ Подстраница";
+    addSubBtn.className = "add-btn";
+    addSubBtn.onclick = function() {
+        addSubPage(category, catId);
+    };
+
+    category.appendChild(titleSpan);
+    category.appendChild(delBtn);
+    category.appendChild(addSubBtn);
+
+    document.getElementById("menu").appendChild(category);
+
+    let page = document.createElement("div");
+    page.id = catId;
+    page.className = "page editable";
+    page.style.display = "none";
+    page.innerHTML = "<h2>" + title + "</h2><p>Описание категории...</p>";
+    document.getElementById("content").appendChild(page);
+
+    showPage(catId);
+}
+
+function addSubPage(categoryElement, parentId) {
+    let title = prompt("Название подстраницы:");
+    if (!title) return;
+
+    idCounter++;
+    let pageId = "page" + idCounter;
+
+    let sub = document.createElement("div");
+    sub.className = "subpage editable";
+    sub.textContent = title;
+    sub.contentEditable = editMode;
+    sub.onclick = function() { showPage(pageId); };
+
+    let delBtn = document.createElement("button");
+    delBtn.textContent = "X";
+    delBtn.className = "delete-btn";
+    delBtn.onclick = function() {
+        document.getElementById(pageId).remove();
+        sub.remove();
+    };
+
+    sub.appendChild(delBtn);
+    categoryElement.appendChild(sub);
+
+    let page = document.createElement("div");
+    page.id = pageId;
+    page.className = "page editable";
+    page.style.display = "none";
+    page.innerHTML = "<h2>" + title + "</h2><p>Текст подстраницы...</p>";
+    document.getElementById("content").appendChild(page);
+
+    showPage(pageId);
+}
+
+/* ==== ДОБАВЛЕНИЕ ФОТО ==== */
+
+function addPhoto() {
+    if (!editMode) return;
+
+    let input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = function(event) {
+        let file = event.target.files[0];
+        if (!file) return;
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let imgContainer = document.createElement("div");
+
+            let img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.maxWidth = "100%";
+            img.style.marginTop = "10px";
+
+            let delBtn = document.createElement("button");
+            delBtn.textContent = "Удалить фото";
+            delBtn.className = "delete-btn";
+            delBtn.style.display = "inline";
+            delBtn.onclick = function() {
+                imgContainer.remove();
+            };
+
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(delBtn);
+
+            document.getElementById(currentPageId).appendChild(imgContainer);
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+    input.click();
+}
+</script>
+
+</body>
 </html>
