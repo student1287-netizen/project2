@@ -2,32 +2,27 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Категории величин</title>
+<title>Методы измерения физических величин</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
 }
 
-/* Верхняя панель */
 .top-bar {
-    background: #222;
-    color: white;
+    background: #3B4B75;
+    color: rgb(255, 255, 255);
     padding: 10px;
-    text-align: right;
-}
+    text-align: right;}
 
-/* Основной контейнер */
 .container {
     display: flex;
-    height: calc(100vh - 50px);
-}
+    height: calc(100vh - 50px);}
 
-/* Левая панель */
 .left {
     width: 33.33%;
-    background: #111;
+    background: #092551;
     color: white;
     padding: 20px;
     box-sizing: border-box;
@@ -77,14 +72,12 @@ body {
     cursor: pointer;
 }
 
-/* Правая часть */
 .right {
     width: 66.66%;
     padding: 20px;
     overflow-y: auto;
 }
 
-/* Телеграм */
 .telegram-btn {
     position: fixed;
     right: 20px;
@@ -106,7 +99,7 @@ body {
 <body>
 
 <div class="top-bar">
-    <button onclick="toggleEditMode()">Режим редактирования</button>
+    <button onclick="toggleEditMode()">Режим администратора</button>
     <button id="addPhotoBtn" onclick="addPhoto()" style="display:none;">
         Добавить фото
     </button>
@@ -123,7 +116,7 @@ body {
     <div class="right" id="content">
         <div id="home" class="page editable">
             <h2>Главная страница</h2>
-            <p>Выберите категорию слева.</p>
+            <p>Тут будет описание</p>
         </div>
     </div>
 
@@ -140,7 +133,7 @@ let currentPageId = "home";
 
 function toggleEditMode() {
     if (!editMode) {
-        let input = prompt("Введите пароль:");
+        let input = prompt("Введите пароль");
         if (input === password) {
             editMode = true;
             document.querySelectorAll(".editable").forEach(el => el.contentEditable = "true");
@@ -166,7 +159,7 @@ function showPage(id) {
 }
 
 function addCategory() {
-    let title = prompt("Название категории:");
+    let title = prompt("Название категории");
     if (!title) return;
 
     idCounter++;
@@ -181,7 +174,6 @@ function addCategory() {
     titleSpan.className = "category-title editable";
     titleSpan.contentEditable = editMode;
     titleSpan.onclick = function() { showPage(catId); };
-
     let delBtn = document.createElement("button");
     delBtn.textContent = "X";
     delBtn.className = "delete-btn";
@@ -247,7 +239,6 @@ function addSubPage(categoryElement, parentId) {
     showPage(pageId);
 }
 
-/* ==== ДОБАВЛЕНИЕ ФОТО ==== */
 
 function addPhoto() {
     if (!editMode) return;
